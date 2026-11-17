@@ -1,6 +1,6 @@
 # Report template
 
-Use these sections in this order. Plain language; the reader is a business owner, not a lawyer.
+What each section of the report is for. The report itself is produced from `report.json` (see `report-schema.md`) by `scripts/render-report.mjs`, which lays these sections out as colour-coded tables in this order. Plain language; the reader is a business owner, not a lawyer.
 
 ---
 

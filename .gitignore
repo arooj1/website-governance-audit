@@ -2,3 +2,4 @@ node_modules/
 evidence/
 reports/private/
 .DS_Store
+examples/*.html

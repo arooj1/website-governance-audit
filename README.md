@@ -78,7 +78,7 @@ Each library file carries a "Last verified" date. Laws move, so check the date b
 2. **Scan.** [`scan.mjs`](skill/website-governance-audit/scripts/scan.mjs) opens the site in a fresh browser and clicks nothing. It records cookies and storage set before consent, every third-party host, security headers, policy pages and their text, forms and their consent wording, media and embeds, AI-content labels, testimonials, structured data, crawler files, first-visit screenshots, and axe-core accessibility results.
 3. **Applicability.** [`jurisdictions.md`](skill/website-governance-audit/references/jurisdictions.md) decides which laws apply, from origin and audience.
 4. **Checks.** The [clause libraries](skill/website-governance-audit/references) test the evidence.
-5. **Report.** [`report-template.md`](skill/website-governance-audit/references/report-template.md): the three fixes that matter most at the top, passes as well as failures.
+5. **Report.** Findings are written as data ([`report-schema.md`](skill/website-governance-audit/references/report-schema.md)) and rendered by [`render-report.mjs`](skill/website-governance-audit/scripts/render-report.mjs) into one self-contained page: colour-coded tables, the three fixes that matter most at the top, passes as well as failures. It reads well on a phone and prints cleanly. See the [sample report data](examples/aroojqureshi.com.report.json) for aroojqureshi.com.
 
 ## Use it
 
@@ -90,6 +90,7 @@ Each library file carries a "Last verified" date. Laws move, so check the date b
 npm ci
 npx playwright install chromium
 npm run scan -- https://example.com --out evidence/example.com --max-pages 12
+npm run report -- examples/aroojqureshi.com.report.json --out report.html
 ```
 
 **Run it in GitHub Actions.** Actions → **Governance scan** → *Run workflow*, then enter one or more URLs, comma-separated. The evidence is uploaded as an artifact and kept for 7 days.

@@ -67,13 +67,20 @@ Record passes as well as failures. A report that only lists failures cannot be t
 
 ### 5. Write the report
 
-Follow `references/report-template.md` exactly. Rules:
+The report is colour-coded and table-first. Write it as data, then render it:
 
-- Every finding has: ID, severity, what we saw (evidence with URL), the clause (law, section, official link), why it applies to this site, the risk in one sentence, the fix (specific enough to implement, with code or wording where useful), and the effort (minutes, hours, days).
+1. Fill `report.json` following `references/report-schema.md` (worked example: `examples/aroojqureshi.com.report.json` in the repo). `references/report-template.md` explains what each section is for.
+2. Render: `node scripts/render-report.mjs report.json --out report.html`. The page is self-contained (fonts embedded), works on phones and prints cleanly.
+3. Deliver the HTML: publish it as a private artifact if the session can, otherwise send the file. Open it and look at it before you hand it over.
+
+Rules for the content:
+
+- Every finding has: ID, severity, what we saw (evidence with URL), the clause (law, section, official link), why it applies to this site, the risk in one sentence, the fix (specific enough to implement, with code or wording where useful), effort, and status.
 - Severity: **High**: likely non-compliance with a law that applies. **Medium**: a gap under a law that likely applies, or a weak control. **Low**: best practice, a law not yet triggered, or a law that is coming. Never mark a finding High under a law marked "likely applies"; it is Medium until the owner confirms the trigger.
-- Separate what the scanner observed from what you inferred. Inferences go under "Owner to confirm".
+- Separate what the scanner observed from what you inferred. Inferences go under `owner_to_confirm`.
 - Quote site text verbatim when it is the evidence. Do not quote more than needed.
-- Lead with the three findings that matter most. Owners act on the top of the report.
+- `top_fixes` names the three findings that matter most. Owners act on the top of the report.
+- After fixes, re-scan and update each finding's `status` and `status_note` from the new evidence, never from the owner's say-so alone (except `confirmed`, which records an owner's answer).
 - If the site is someone else's, the report is private to the person who asked. Do not publish findings about a third party's site without that owner's permission; anonymise if writing about it.
 
 ## Things this skill must never do

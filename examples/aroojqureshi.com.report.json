@@ -1,0 +1,138 @@
+{
+  "site": "aroojqureshi.com",
+  "url": "https://aroojqureshi.com/",
+  "date": "2026-11-17",
+  "scanner": "Scanner v1.1.0",
+  "owner": { "origin": "Hamilton, Ontario, Canada", "audience": "Canada and the US", "confirmed": false },
+  "summary": "No cookies and no trackers, so most privacy law stays quiet. The gaps were a missing privacy notice, an unlabelled AI-generated video, and one experience claim worded more broadly than the record behind it. All nine findings are now closed.",
+  "top_fixes": ["F1", "F2", "F3"],
+  "scope": [
+    { "framework": "PIPEDA (Canada)", "status": "applies", "why": "Ontario business collecting personal information in commercial activity: emails to hello@, Cloudflare analytics." },
+    { "framework": "Quebec Law 25", "status": "likely", "why": "Serves clients \"across Canada\"; confirm whether there are Quebec clients or visitors." },
+    { "framework": "Competition Act (Canada)", "status": "applies", "why": "The site promotes services to people in Canada." },
+    { "framework": "Copyright Act (Canada)", "status": "applies", "why": "Photos, video, fonts and quoted recommendations are reproduced." },
+    { "framework": "CASL (Canada)", "status": "not_triggered", "why": "No newsletter or sign-up form on the site." },
+    { "framework": "AODA (Ontario)", "status": "best_practice", "why": "Website rule (WCAG 2.0 AA) starts at 50 employees in Ontario." },
+    { "framework": "FTC Act s. 5, 16 CFR 255 and 465 (US)", "status": "applies", "why": "Markets services and shows testimonials to US clients." },
+    { "framework": "CCPA (California)", "status": "not_triggered", "why": "Revenue far below USD 26.625M; nowhere near 100,000 California consumers." },
+    { "framework": "GDPR and UK GDPR", "status": "not_triggered", "why": "No EU/UK targeting and no tracking. Ad pixels, Google Analytics or EU marketing would trigger it." },
+    { "framework": "ePrivacy (EU) and PECR (UK)", "status": "not_triggered", "why": "Nothing is stored on the visitor's device." },
+    { "framework": "EU AI Act Art. 50", "status": "likely", "why": "The AI-generated hero video is output used in the EU whenever an EU visitor views it (Art. 2(1)(c))." },
+    { "framework": "ADA (US)", "status": "best_practice", "why": "No federal website rule for private businesses; litigation risk only." }
+  ],
+  "first_visit": [
+    { "check": "Cookies set before any choice", "result": "0", "flag": "ok" },
+    { "check": "Device storage (localStorage, sessionStorage)", "result": "0 keys", "flag": "ok" },
+    { "check": "Third-party hosts contacted", "result": "1: static.cloudflareinsights.com (cookieless page-view counter)", "flag": "info" },
+    { "check": "Consent banner", "result": "None, and none needed while nothing is stored on the device", "flag": "ok" },
+    { "check": "Forms", "result": "0. Contact is a mailto link", "flag": "ok" },
+    { "check": "Hero video", "result": "Autoplay, muted, looping; no AI label, no pause control", "flag": "bad" },
+    { "check": "HTTPS", "result": "Main site on HTTPS, but `http://` answered 200 without redirecting", "flag": "bad" },
+    { "check": "Security headers", "result": "0 of 5 (HSTS, CSP, nosniff, Referrer-Policy, Permissions-Policy)", "flag": "warn" },
+    { "check": "Privacy notice", "result": "None found", "flag": "bad" },
+    { "check": "Crawler files", "result": "robots.txt (allows all), llms.txt, sitemap.xml; no security.txt", "flag": "info" },
+    { "check": "Automated accessibility (axe-core)", "result": "1 rule failing on 4 elements; 22 passing", "flag": "warn" }
+  ],
+  "findings": [
+    {
+      "id": "F1", "severity": "high", "title": "No privacy notice",
+      "saw": "No privacy, terms or cookie page linked anywhere. The site invites email to hello@aroojqureshi.com and loads Cloudflare Web Analytics.",
+      "clause": { "text": "PIPEDA Sch. 1, Principle 4.8 (Openness); Law 25 ss. 3.1, 8.2", "url": "https://laws-lois.justice.gc.ca/eng/acts/P-8.6/" },
+      "why": "An Ontario business receiving prospects' emails and page-view data is collecting personal information in commercial activity.",
+      "risk": "A prospect asking \"what do you do with my data?\" finds nothing.",
+      "fix": "Publish /privacy, linked from the footer and contact section: who is accountable, what is collected, why, who processes it and where, retention, access and correction, how to complain (OPC; CAI for Quebec).",
+      "fix_short": "Publish a /privacy notice and link it from the footer and contact section.",
+      "effort": "2 hours", "status": "fixed", "status_note": "Published 2026-11-17."
+    },
+    {
+      "id": "F2", "severity": "medium", "title": "AI-generated hero video has no label",
+      "saw": "Realistic driver's-eye video (car, lake, bridge, city) made with Runway; no text says it is AI-generated.",
+      "clause": { "text": "EU AI Act Art. 50(4), with Art. 3(60)", "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj" },
+      "why": "The scene could pass as filmed footage; any EU visitor brings the output into the EU.",
+      "risk": "Low legal exposure, high credibility cost for an AI-governance adviser.",
+      "fix": "Label on the video (\"AI-generated video\") and an AI-use line in the footer. Keep the export's content credentials.",
+      "fix_short": "Add an \"AI-generated video\" label and a footer AI-use line.",
+      "effort": "20 minutes", "status": "fixed", "status_note": "Label and footer line live."
+    },
+    {
+      "id": "F3", "severity": "medium", "title": "Experience claim overstates what is counted",
+      "saw": "\"13+ years of production AI in regulated industries\" on the homepage and in llms.txt; the years include education analytics and university research.",
+      "clause": { "text": "Competition Act s. 74.01(1)(a); FTC Act s. 5", "url": "https://laws-lois.justice.gc.ca/eng/acts/C-34/" },
+      "why": "Experience is the main reason a buyer picks a fractional lead, so the claim is material.",
+      "risk": "A buyer who counts the CV may doubt the rest of the page.",
+      "fix": "Reword to \"13+ years in AI and data science, now in regulated industries (telecom and energy)\"; update llms.txt and JSON-LD.",
+      "fix_short": "Reword to \"13+ years in AI and data science, now in regulated industries\".",
+      "effort": "10 minutes", "status": "fixed", "status_note": "Reworded everywhere."
+    },
+    {
+      "id": "F4", "severity": "medium", "title": "Plain HTTP served; no security headers",
+      "saw": "`http://aroojqureshi.com/` returned 200 with no redirect; none of five security headers sent.",
+      "clause": { "text": "PIPEDA Sch. 1, Principle 4.7 (Safeguards)", "url": "https://laws-lois.justice.gc.ca/eng/acts/P-8.6/" },
+      "why": "Visitors who type the address without https get an unprotected copy.",
+      "risk": "Low data exposure (no forms), but avoidable.",
+      "fix": "Redirect `http:` to `https:` (301) in the Worker; add HSTS, CSP, `nosniff`, Referrer-Policy and Permissions-Policy to every response.",
+      "effort": "30 minutes", "status": "fixed", "status_note": "Re-scan: 301 redirect, 5 of 5 headers."
+    },
+    {
+      "id": "F5", "severity": "low", "title": "Looping video: no pause control or text alternative",
+      "saw": "11-second hero video autoplays and loops, hidden from screen readers, with no text equivalent.",
+      "clause": { "text": "WCAG 2.2 SC 2.2.2 and 1.2.1 (Level A)", "url": "https://www.w3.org/TR/WCAG22/" },
+      "why": "Best practice here (AODA threshold not met; ADA litigation risk in the US).",
+      "risk": "People who need motion to stop can't; screen-reader users miss the story.",
+      "fix": "Always-visible Pause/Play button; one visually hidden sentence describing the video.",
+      "effort": "45 minutes", "status": "fixed"
+    },
+    {
+      "id": "F6", "severity": "low", "title": "Link names don't match their visible text",
+      "saw": "axe `label-content-name-mismatch` on 4 elements: logo link and three \"Read on LinkedIn\" links.",
+      "clause": { "text": "WCAG 2.2 SC 2.5.3 Label in Name (Level A)", "url": "https://www.w3.org/TR/WCAG22/" },
+      "why": "Voice-control users say what they see, and nothing happens.",
+      "fix": "Start each `aria-label` with the visible words, e.g. \"Read on LinkedIn: From Data Silos to AI Silos\".",
+      "effort": "15 minutes", "status": "fixed", "status_note": "Re-scan: 0 violations."
+    },
+    {
+      "id": "F7", "severity": "low", "title": "llms.txt behind the page",
+      "saw": "llms.txt missing the training offers added on 2026-11-17; repeated the claim in F3.",
+      "clause": { "text": "Competition Act s. 74.01; FTC Act s. 5 (representations however delivered)", "url": "https://laws-lois.justice.gc.ca/eng/acts/C-34/" },
+      "why": "AI assistants that read llms.txt describe an older business.",
+      "fix": "Regenerate llms.txt from the page content whenever the page changes.",
+      "effort": "15 minutes", "status": "fixed"
+    },
+    {
+      "id": "F8", "severity": "low", "title": "Testimonial permissions undocumented",
+      "saw": "Four quoted recommendations, relationships stated; one edited with \"… [and]\".",
+      "clause": { "text": "Competition Act s. 74.02; 16 CFR 255.1", "url": "https://laws-lois.justice.gc.ca/eng/acts/C-34/" },
+      "why": "The quotes promote services to Canadian and US buyers.",
+      "fix": "Keep each quote's source link and the person's OK on file.",
+      "effort": "30 minutes", "status": "confirmed", "status_note": "Owner confirmed: all are public LinkedIn recommendations."
+    },
+    {
+      "id": "F9", "severity": "low", "title": "No security.txt",
+      "saw": "`/.well-known/security.txt` returned 404.",
+      "clause": { "text": "RFC 9116 (standard)", "url": "https://www.rfc-editor.org/rfc/rfc9116" },
+      "why": "Tells researchers how to report a problem.",
+      "fix": "Publish security.txt with a contact and an expiry date.",
+      "effort": "5 minutes", "status": "fixed"
+    }
+  ],
+  "passes": [
+    { "item": "Zero cookies and zero device storage before consent, so no banner is needed.", "clause": "ePrivacy Art. 5(3); PECR reg. 6; Law 25 s. 8.1" },
+    { "item": "Fonts self-hosted with their licence files; visitors' IP addresses are not sent to Google Fonts.", "clause": "GDPR transfers (LG München I, 3 O 17493/20)" },
+    { "item": "Testimonials state the relationship (\"former student\", \"former senior manager\").", "clause": "16 CFR 255.5 and 465.5" },
+    { "item": "No prices and no performance percentages to substantiate.", "clause": "Competition Act s. 74.01(1)(b)" },
+    { "item": "FAQ structured data matches the visible FAQ.", "clause": "Competition Act s. 74.01; FTC Act s. 5" },
+    { "item": "Page language set, image alt text present, www redirects to the main domain.", "clause": "WCAG 2.2 SC 3.1.1, 1.1.1" }
+  ],
+  "owner_to_confirm": [
+    { "question": "Testimonial permissions (F8)", "answer": "All four are public LinkedIn recommendations." },
+    { "question": "Do you have Quebec clients or visitors? Decides whether Law 25 applies." },
+    { "question": "Which countries do visitors come from? EU or UK traffic raises the AI Act exposure." },
+    { "question": "Text contrast over the moving video: check by eye at the darkest and brightest frames." }
+  ],
+  "coming_changes": [
+    "**Canada, Bill C-36** (Protecting Privacy and Consumer Data Act), introduced 15 June 2026, would replace Part 1 of PIPEDA. Not law yet.",
+    "**Ontario AODA** is expected to move from WCAG 2.0 to WCAG 2.2.",
+    "**EU AI Act Art. 50(2)**: the AI tool provider's machine-readable marking duty applies to existing systems from 2 December 2026."
+  ],
+  "method": "First-visit scan on 2026-11-17 from a GitHub-hosted runner, fresh Chromium profile identifying itself as website-governance-audit and obeying robots.txt; re-scanned after fixes the same day. The scan cannot see server-side logs, dashboard settings, emails sent or contracts with processors. Automated accessibility testing finds only part of the problems."
+}
