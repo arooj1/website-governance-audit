@@ -13,6 +13,10 @@ on:
         description: "Pages to crawl per site"
         required: false
         default: "12"
+      print_to_log:
+        description: "Also print evidence.json to the run log (for agents that cannot download artifacts). Logs of a public repo are public: use only for your own sites."
+        type: boolean
+        default: false
       owner_authorized:
         description: "The site owners gave permission (needed only if a site's robots.txt blocks crawlers)"
         type: boolean
@@ -48,6 +52,16 @@ jobs:
             host="$(echo "$u" | sed -E 's#^https?://##; s#/.*$##')"
             echo "::group::Scanning $u"
             node skill/website-governance-audit/scripts/scan.mjs "$u" --out "evidence/$host" --max-pages "$MAX_PAGES" $FLAG || echo "::warning::Scan failed for $u"
+            echo "::endgroup::"
+          done
+      - name: Print evidence to log
+        if: ${{ inputs.print_to_log }}
+        run: |
+          for f in evidence/*/evidence.json; do
+            echo "::group::$f"
+            echo "EVIDENCE_BEGIN $f"
+            gzip -c "$f" | base64 -w 0; echo
+            echo "EVIDENCE_END"
             echo "::endgroup::"
           done
       - uses: actions/upload-artifact@v4
