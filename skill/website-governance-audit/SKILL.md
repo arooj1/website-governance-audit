@@ -35,6 +35,8 @@ npm ci && npx playwright install chromium
 node scripts/scan.mjs https://example.com --out evidence/example.com --max-pages 12
 ```
 
+The scanner identifies itself in its user agent and obeys robots.txt. If a site disallows crawlers, the scan stops with exit code 3. Do not work around that: ask the site's owner for permission, and only then re-run with `--owner-authorized`, recording who gave permission in the report's "Method and limits". A robots.txt that blocks all automated access is itself worth a line in the report (see AI-03).
+
 If the session cannot reach the public internet, run the repository's GitHub Action "Governance scan" (workflow_dispatch, input `urls`) and download the `evidence` artifact.
 
 Then read the site yourself: the homepage, every policy page the scanner found, and the footer. Automated tools catch roughly a third of accessibility problems and none of the meaning of a privacy policy.
@@ -78,6 +80,7 @@ Follow `references/report-template.md` exactly. Rules:
 
 - Never state that a site "is compliant" or "is non-compliant" with a law as a legal conclusion. Say what the evidence shows against the clause.
 - Never invent a clause, a section number, a fine amount or a deadline. If you are not certain of a section number, cite the law and the official link without the number, and say the section must be confirmed.
+- Never bypass robots.txt, a login, a paywall or a bot check. Stop and ask.
 - Never click "accept" on a consent banner during the first-visit scan. A second, consenting scan is allowed only if labelled as such.
 - Never submit forms, create accounts or send email through the audited site.
 - Never treat laws in `jurisdictions.md` marked "proposed" (for example Canada's Bill C-36) as in force. Mention them under "Coming changes" only.

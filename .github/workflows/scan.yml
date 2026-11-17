@@ -13,6 +13,10 @@ on:
         description: "Pages to crawl per site"
         required: false
         default: "12"
+      owner_authorized:
+        description: "The site owners gave permission (needed only if a site's robots.txt blocks crawlers)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -33,14 +37,17 @@ jobs:
         env:
           URLS: ${{ inputs.urls }}
           MAX_PAGES: ${{ inputs.max_pages }}
+          OWNER_AUTH: ${{ inputs.owner_authorized }}
         run: |
+          FLAG=""
+          [ "$OWNER_AUTH" = "true" ] && FLAG="--owner-authorized"
           IFS=',' read -ra LIST <<< "$URLS"
           for raw in "${LIST[@]}"; do
             u="$(echo "$raw" | xargs)"
             [ -z "$u" ] && continue
             host="$(echo "$u" | sed -E 's#^https?://##; s#/.*$##')"
             echo "::group::Scanning $u"
-            node skill/website-governance-audit/scripts/scan.mjs "$u" --out "evidence/$host" --max-pages "$MAX_PAGES" || echo "::warning::Scan failed for $u"
+            node skill/website-governance-audit/scripts/scan.mjs "$u" --out "evidence/$host" --max-pages "$MAX_PAGES" $FLAG || echo "::warning::Scan failed for $u"
             echo "::endgroup::"
           done
       - uses: actions/upload-artifact@v4

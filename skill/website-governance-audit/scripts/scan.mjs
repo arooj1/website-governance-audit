@@ -9,14 +9,18 @@
 // It collects EVIDENCE only. Deciding which laws apply and whether something is a
 // breach is the job of the skill (SKILL.md), which reads this file's output.
 //
-// Usage: node scan.mjs <url> [--out dir] [--max-pages 12]
+// Usage: node scan.mjs <url> [--out dir] [--max-pages 12] [--owner-authorized]
+//
+// The scanner identifies itself in its user agent and obeys robots.txt. If the site
+// disallows crawlers, it stops, unless --owner-authorized is passed, which you may only
+// do when the site's owner has given permission for the audit.
 
 import { chromium, devices } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
 import fs from "node:fs";
 import path from "node:path";
 
-const VERSION = "1.0.0";
+const VERSION = "1.1.0";
 
 const args = process.argv.slice(2);
 const target = args.find((a) => !a.startsWith("--"));
@@ -25,12 +29,14 @@ const opt = (name, dflt) => {
   return i >= 0 ? args[i + 1] : dflt;
 };
 if (!target) {
-  console.error("Usage: node scan.mjs <url> [--out dir] [--max-pages 12]");
+  console.error("Usage: node scan.mjs <url> [--out dir] [--max-pages 12] [--owner-authorized]");
   process.exit(2);
 }
 const startUrl = new URL(target.includes("://") ? target : `https://${target}`);
 const outDir = opt("out", path.join("evidence", startUrl.hostname));
 const maxPages = Number(opt("max-pages", 12));
+const ownerAuthorized = args.includes("--owner-authorized");
+const UA_TOKEN = `website-governance-audit/${VERSION} (+https://github.com/arooj1/website-governance-audit)`;
 fs.mkdirSync(outDir, { recursive: true });
 
 // Known third parties, grouped by what they mean for governance.
@@ -84,11 +90,50 @@ const sameSite = (a, b) => {
 const POLICY_WORDS = /privacy|cookie|terms|legal|accessib|disclaimer|imprint|impressum|policy|confidential|politique|refund|ai[-\s]?(use|policy|statement)/i;
 const AI_LABEL_WORDS = /\b(ai[-\s]generated|generated (by|with) (ai|artificial)|made with ai|created with ai|synthetic (video|image|media)|ai[-\s]assisted|artificially generated|created using (runway|sora|midjourney|dall|firefly|veo|kling|pika))\b/i;
 
+// Minimal robots.txt check (RFC 9309): find the group for our token, else "*",
+// and apply the longest matching Allow/Disallow rule.
+function robotsAllows(robotsText, pathname) {
+  if (!robotsText) return { allowed: true, group: null };
+  const groups = [];
+  let cur = null;
+  let lastWasAgent = false;
+  for (const raw of robotsText.split(/\r?\n/)) {
+    const line = raw.replace(/#.*/, "").trim();
+    const m = line.match(/^([A-Za-z-]+)\s*:\s*(.*)$/);
+    if (!m) continue;
+    const key = m[1].toLowerCase();
+    const val = m[2].trim();
+    if (key === "user-agent") {
+      if (!lastWasAgent) { cur = { agents: [], rules: [] }; groups.push(cur); }
+      cur.agents.push(val.toLowerCase());
+      lastWasAgent = true;
+    } else if (cur && (key === "allow" || key === "disallow")) {
+      cur.rules.push({ allow: key === "allow", path: val });
+      lastWasAgent = false;
+    } else {
+      lastWasAgent = false;
+    }
+  }
+  const mine = groups.find((g) => g.agents.some((a) => a !== "*" && "website-governance-audit".startsWith(a)))
+    || groups.find((g) => g.agents.includes("*"));
+  if (!mine) return { allowed: true, group: null };
+  const toRe = (p) => new RegExp("^" + p.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*").replace(/\\\$$/, "$"));
+  let best = null;
+  for (const r of mine.rules) {
+    if (r.path === "") continue; // empty Disallow allows everything
+    if (toRe(r.path).test(pathname) && (!best || r.path.length > best.path.length || (r.path.length === best.path.length && r.allow))) best = r;
+  }
+  return { allowed: !best || best.allow, group: mine.agents, rule: best };
+}
+
 const evidence = {
   scanner: { name: "website-governance-audit", version: VERSION },
   target: startUrl.href,
   scanned_at: new Date().toISOString(),
   method: "Fresh browser profile, no clicks, no consent given. Cookies and requests below are what a first-time visitor gets before making any choice.",
+  user_agent_token: UA_TOKEN,
+  owner_authorized: ownerAuthorized,
+  robots: null,
   transport: {},
   crawler_files: {},
   pages: [],
@@ -103,7 +148,7 @@ const evidence = {
 const browser = await chromium.launch();
 try {
   // ---------- Transport: does http redirect to https? ----------
-  const ctxPlain = await browser.newContext();
+  const ctxPlain = await browser.newContext({ userAgent: `${devices["Desktop Chrome"].userAgent} ${UA_TOKEN}` });
   try {
     const httpUrl = new URL(startUrl.href);
     httpUrl.protocol = "http:";
@@ -129,8 +174,20 @@ try {
   }
   await ctxPlain.close();
 
+  // ---------- Respect robots.txt ----------
+  const robotsText = evidence.crawler_files["/robots.txt"] && evidence.crawler_files["/robots.txt"].content;
+  const verdict = robotsAllows(robotsText, startUrl.pathname || "/");
+  evidence.robots = { allowed: verdict.allowed, group: verdict.group, rule: verdict.rule || null };
+  if (!verdict.allowed && !ownerAuthorized) {
+    evidence.stopped = "robots.txt disallows automated access to this site. Scan stopped. Re-run with --owner-authorized only if the site owner has given permission.";
+    fs.writeFileSync(path.join(outDir, "evidence.json"), JSON.stringify(evidence, null, 2));
+    console.log(evidence.stopped);
+    await browser.close();
+    process.exit(3);
+  }
+
   // ---------- First visit: cookies, storage, requests, banner ----------
-  const ctx = await browser.newContext({ ...devices["Desktop Chrome"], locale: "en-CA" });
+  const ctx = await browser.newContext({ ...devices["Desktop Chrome"], userAgent: `${devices["Desktop Chrome"].userAgent} ${UA_TOKEN}`, locale: "en-CA" });
   const requests = new Map(); // host -> {count, sample, classify, pages:Set}
   let currentPage = startUrl.href;
   ctx.on("request", (req) => {
@@ -199,6 +256,7 @@ try {
       if (u.origin !== finalUrl.origin) continue;
       const key = u.origin + u.pathname;
       if (seen.has(key) || /\.(pdf|jpg|jpeg|png|webp|mp4|zip)$/i.test(u.pathname)) continue;
+      if (!ownerAuthorized && !robotsAllows(robotsText, u.pathname).allowed) { seen.add(key); continue; }
       seen.add(key);
       queue.push({ url: key, text: l.text, policy: POLICY_WORDS.test(u.pathname + " " + l.text) });
     } catch {}
@@ -291,7 +349,7 @@ try {
   }
 
   // Mobile first-visit screenshot.
-  const mctx = await browser.newContext({ ...devices["iPhone 13"] });
+  const mctx = await browser.newContext({ ...devices["iPhone 13"], userAgent: `${devices["iPhone 13"].userAgent} ${UA_TOKEN}` });
   const mp = await mctx.newPage();
   try {
     await mp.goto(finalUrl.href, { waitUntil: "load", timeout: 45000 });

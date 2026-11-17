@@ -58,6 +58,7 @@ Actions → **Governance scan** → *Run workflow*, enter one or more URLs (comm
 ## Ground rules
 
 - Scan only sites you own or have permission to review. Do not publish findings about someone else's site without their permission.
+- The scanner announces itself (`website-governance-audit/<version>` in its user agent) and obeys robots.txt. A site that blocks crawlers is scanned only with the owner's permission (`--owner-authorized`).
 - The first-visit scan never accepts a consent banner, submits a form or creates an account.
 - The skill never states that a site "is compliant". It reports what the evidence shows against each clause.
 
