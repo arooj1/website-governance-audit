@@ -2,6 +2,8 @@
   <img src="assets/banner.svg" width="100%" alt="Website governance audit. Your website is already making legal promises. Every finding cites a clause and proposes a fix, for the laws where you are and where your visitors are. A scan card checks cookies before consent, PIPEDA 4.8, GDPR Article 3(2), EU AI Act Article 50(4) and WCAG 2.5.3.">
 </p>
 
+[![CI](https://github.com/arooj1/website-governance-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/arooj1/website-governance-audit/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-FDE047?labelColor=111214)](LICENSE) [![Scanner: obeys robots.txt](https://img.shields.io/badge/Scanner-obeys%20robots.txt-FDE047?labelColor=111214)](#manners)
+
 # Website governance audit
 
 Your website is already making legal promises.

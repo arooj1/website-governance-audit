@@ -19,13 +19,19 @@ npm run scan -- https://your-own-site.example --out evidence/your-own-site --max
 
 The scanner is [`skill/website-governance-audit/scripts/scan.mjs`](skill/website-governance-audit/scripts/scan.mjs). The skill's instructions are in [`SKILL.md`](skill/website-governance-audit/SKILL.md), and the clause libraries and report template are in [`references/`](skill/website-governance-audit/references).
 
-There is no automated test suite yet. To check a scanner change, run it against a site you own (or a local copy served with `python3 -m http.server`) before and after, and compare the two `evidence.json` files.
+Run the tests before you open a pull request; CI runs the same:
+
+```bash
+npm test
+```
+
+They scan two local fixture sites in `test/fixtures/` (one open, one whose robots.txt blocks crawlers) and render the example report. A scanner change that adds an evidence field should add a fixture element and a check for it in `test/run.mjs`.
 
 ## Pull requests
 
 - Keep each PR to one change, with a short description of *why*.
 - **Clause changes:** link the official text you checked, and say what changed in the law or in our reading of it.
-- **Scanner changes:** say which evidence fields you added or changed, and show a before/after `summary` from a real run.
+- **Scanner changes:** say which evidence fields you added or changed, add a test for them, and show a before/after `summary` from a real run.
 - **New jurisdictions:** add the trigger to `jurisdictions.md` first (what brings the law into play for a foreign site), then the checks.
 - Never commit scan evidence about sites you don't own. `evidence/` is git-ignored for that reason.
 

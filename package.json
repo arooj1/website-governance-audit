@@ -4,7 +4,8 @@
   "description": "A Claude skill and scanner that audits a website's governance (privacy, cookies, anti-spam, advertising claims, copyright, accessibility, AI-content disclosure) against the laws of its owner's country and its visitors' regions.",
   "scripts": {
     "scan": "node skill/website-governance-audit/scripts/scan.mjs",
-    "report": "node skill/website-governance-audit/scripts/render-report.mjs"
+    "report": "node skill/website-governance-audit/scripts/render-report.mjs",
+    "test": "node test/run.mjs"
   },
   "author": "Arooj Qureshi",
   "license": "MIT",

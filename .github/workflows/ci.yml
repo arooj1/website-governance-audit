@@ -1,0 +1,36 @@
+# CI for website-governance-audit
+#
+# check — every push and pull request: syntax-checks the scripts, then runs test/run.mjs,
+# which scans two local fixture sites (one open, one that blocks crawlers) and renders the
+# example report. No secrets, no network access to real websites.
+
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Scanner and report tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Syntax check
+        run: |
+          node --check skill/website-governance-audit/scripts/scan.mjs
+          node --check skill/website-governance-audit/scripts/render-report.mjs
+          node --check test/run.mjs
+      - name: Tests
+        run: npm test
