@@ -30,6 +30,10 @@ The report also lists what's already right, the facts only the owner can confirm
 
 ## Reachable everywhere is not governed everywhere
 
+<p align="center">
+  <img src="assets/scope.svg" width="100%" alt="One website, owned in Ontario, Canada, loads in every country. Canadian law (PIPEDA, CASL) applies because the owner is there. US advertising law (FTC Act) applies because the site markets to US clients. The EU AI Act Article 50 likely applies because EU visitors see an AI-generated video. The EU GDPR and cookie rules are not triggered, because the site neither offers services to the EU nor tracks anyone; one tracking pixel would change that.">
+</p>
+
 A website loads in every country. That doesn't put it under every country's law.
 
 Canadian law applies to a Canadian owner. The EU GDPR applies to that owner only if the site **offers** services to people in the EU or **monitors** them, for example with tracking cookies. The EU AI Act's disclosure rule applies when AI-generated **output is used in the EU**. So the skill gives every framework one of four statuses, with the reason:
@@ -98,10 +102,10 @@ An auditor that ignores the rules it checks would be a bit rich.
 - **It agrees to nothing.** The first-visit scan never accepts a consent banner, submits a form or creates an account.
 - **It doesn't overclaim.** The skill never says a site "is compliant". It reports what the evidence shows against each clause.
 - **It minds its own business.** Scan sites you own or have permission to review. Don't publish findings about someone else's site without their OK.
-- **Even the banner behaves.** The animation above plays once and settles inside five seconds (WCAG 2.2.2). A governance repo with an endlessly looping banner would be a little embarrassing.
+- **Even the images behave.** The animations in this README play once and settle inside five seconds (WCAG 2.2.2). A governance repo with an endlessly looping banner would be a little embarrassing.
 
 ## Licence
 
 Code and skill: MIT © 2026 Arooj Qureshi.
 
-The banner embeds subsets of Inter Tight, Caveat and JetBrains Mono under the SIL Open Font License 1.1; the licence files are in [`assets/banner/`](assets/banner). Rebuild the banner with `python3 assets/banner/build.py`.
+The README images embed subsets of Inter Tight, Caveat and JetBrains Mono under the SIL Open Font License 1.1; the licence files are in [`assets/banner/`](assets/banner). Rebuild the images with `python3 assets/banner/build.py` and `python3 assets/banner/build_scope.py`.
