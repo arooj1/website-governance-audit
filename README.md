@@ -1,49 +1,86 @@
+<p align="center">
+  <img src="assets/banner.svg" width="100%" alt="Website governance audit. Your website is already making legal promises. Every finding cites a clause and proposes a fix, for the laws where you are and where your visitors are. A scan card checks cookies before consent, PIPEDA 4.8, GDPR Article 3(2), EU AI Act Article 50(4) and WCAG 2.5.3.">
+</p>
+
 # Website governance audit
 
-A Claude skill and an evidence scanner that audit a website the way a regulator, or a careful customer, meets it: as a first-time visitor who has agreed to nothing.
+Your website is already making legal promises.
 
-Every finding in the report:
+Every cookie it drops, every testimonial it quotes, every "13+ years" in a headline is a representation to the public. Somebody's law covers each one. Most owners have never read what their site says on their behalf.
 
-- rests on evidence from the scan or the page,
-- cites the clause it engages, with a link to the official text,
-- says **why that law applies to this site**, from the owner's country *and* the visitors' regions,
-- and proposes a concrete fix.
+This repo is a Claude skill plus a scanner that reads it for you. It walks in like a first-time visitor who has agreed to nothing, writes down everything the site does, and checks it clause by clause against the laws that actually apply.
 
-It covers privacy and cookies, anti-spam consent, advertising claims and testimonials, copyright, accessibility, and disclosure of AI-generated content.
+It's not a cookie-banner generator. It's a governance review with receipts.
 
-> This is a governance review against published laws and standards, not legal advice.
+> A governance review against published laws and standards, not legal advice.
 
-## Why "origin and audience"
+## What a finding looks like
 
-A website is reachable from everywhere, but laws are not triggered by reachability. Canadian law applies to a Canadian owner. The EU GDPR applies to that owner only if the site **offers** services to people in the EU or **monitors** them (for example with tracking cookies). The EU AI Act's disclosure rules apply when AI-generated **output is used in the EU**. The skill records each framework as *Applies*, *Likely applies*, *Not triggered* or *Best practice only*, and explains the trigger, so the owner also learns what would bring a law into play.
+Every finding carries five things, so nobody has to take the report on faith:
+
+| Part | What it holds |
+| --- | --- |
+| What we saw | The evidence, with the page URL, quoted where text is the evidence |
+| The clause | Law, section, and a link to the official text |
+| Why it applies here | The trigger, from the owner's country and the visitors' regions |
+| The fix | Wording or code you can paste |
+| Effort | Minutes, hours or days |
+
+The report also lists what's already right, the facts only the owner can confirm, and laws that are coming but not here yet.
+
+## Reachable everywhere is not governed everywhere
+
+A website loads in every country. That doesn't put it under every country's law.
+
+Canadian law applies to a Canadian owner. The EU GDPR applies to that owner only if the site **offers** services to people in the EU or **monitors** them, for example with tracking cookies. The EU AI Act's disclosure rule applies when AI-generated **output is used in the EU**. So the skill gives every framework one of four statuses, with the reason:
+
+- **Applies.** The trigger is met on the evidence.
+- **Likely applies.** It depends on a fact the owner must confirm.
+- **Not triggered.** And here's exactly what would trigger it.
+- **Best practice only.** No legal hook, but the sensible standard.
+
+"Not triggered" is the most useful line in most reports. It tells you which shiny new tracking script would quietly bring the GDPR along with it.
+
+## Tried on my own site first
+
+Before pointing this at anyone else, I ran it on [aroojqureshi.com](https://aroojqureshi.com). Nine findings. Eight fixed the same afternoon, and the ninth closed on confirmation. Then a second scan of the live site checked the fixes.
+
+| Check | First scan | After the fixes |
+| --- | --- | --- |
+| Cookies before consent | 0 | 0 |
+| Privacy notice | None | Published and linked |
+| AI-generated hero video | Unlabelled | Labelled, with an AI-use line in the footer |
+| Plain http | Served the site | Redirects to https |
+| Security headers | 0 of 5 | 5 of 5 |
+| Automated accessibility violations | 4 | 0 |
+
+The most uncomfortable finding was my own headline. "13+ years of production AI in regulated industries" counted years that weren't in regulated industries. Fixing it took ten minutes. Admitting it took slightly longer.
 
 ## Frameworks in the clause library
 
 | Region | Frameworks |
-|---|---|
-| Canada | PIPEDA, Quebec Law 25, CASL, Competition Act (deceptive marketing, testimonials), Copyright Act, AODA |
+| --- | --- |
+| Canada | PIPEDA, Quebec Law 25, CASL, Competition Act (claims and testimonials), Copyright Act, AODA |
 | EU | GDPR, ePrivacy Directive (cookies), EU AI Act Art. 50 (AI-content transparency), European Accessibility Act |
 | UK | UK GDPR, PECR as amended by the Data (Use and Access) Act 2025 |
-| US | FTC Act s. 5, Endorsement Guides (16 CFR 255), Consumer Reviews and Testimonials Rule (16 CFR 465), CCPA/CPRA, COPPA, CAN-SPAM, ADA (risk) |
+| US | FTC Act s. 5, Endorsement Guides (16 CFR 255), Consumer Reviews and Testimonials Rule (16 CFR 465), CCPA/CPRA, COPPA, CAN-SPAM, ADA (risk only) |
 | Standards | WCAG 2.2 AA, C2PA content credentials, RFC 9116 security.txt, AI-crawler policy |
 
-Each library file carries a "Last verified" date. Laws move; check before relying on an entry.
+Each library file carries a "Last verified" date. Laws move, so check the date before you lean on an entry.
 
 ## How it works
 
-1. **Intake**: owner location, size, audiences, data collected, and which media are AI-generated.
-2. **Scan**: `scripts/scan.mjs` opens the site in a fresh browser, clicks nothing, and records cookies and storage set before consent, every third-party host, security headers, policy pages and their text, forms and consent wording, media and embeds, AI-content labels, testimonials, structured data, robots.txt / llms.txt / security.txt, first-visit screenshots, and axe-core accessibility results.
-3. **Applicability**: `references/jurisdictions.md` decides which laws apply.
-4. **Checks**: the clause libraries in `references/` test the evidence.
-5. **Report**: `references/report-template.md`, with the three fixes that matter most at the top, passes as well as failures, and a list of facts the owner must confirm.
+1. **Intake.** Where the owner is, how big the business is, who visits, what data comes in, and which media are AI-generated.
+2. **Scan.** [`scan.mjs`](skill/website-governance-audit/scripts/scan.mjs) opens the site in a fresh browser and clicks nothing. It records cookies and storage set before consent, every third-party host, security headers, policy pages and their text, forms and their consent wording, media and embeds, AI-content labels, testimonials, structured data, crawler files, first-visit screenshots, and axe-core accessibility results.
+3. **Applicability.** [`jurisdictions.md`](skill/website-governance-audit/references/jurisdictions.md) decides which laws apply, from origin and audience.
+4. **Checks.** The [clause libraries](skill/website-governance-audit/references) test the evidence.
+5. **Report.** [`report-template.md`](skill/website-governance-audit/references/report-template.md): the three fixes that matter most at the top, passes as well as failures.
 
 ## Use it
 
-### As a Claude skill
+**As a Claude skill.** Copy [`skill/website-governance-audit/`](skill/website-governance-audit) into your skills folder, or upload it as a skill. Then ask: *"Run a website governance audit on https://example.com."*
 
-Copy `skill/website-governance-audit/` into your skills folder (or upload it as a skill), then ask Claude: *"Run a website governance audit on https://example.com."*
-
-### Run the scanner yourself
+**Run the scanner yourself.**
 
 ```bash
 npm ci
@@ -51,17 +88,20 @@ npx playwright install chromium
 npm run scan -- https://example.com --out evidence/example.com --max-pages 12
 ```
 
-### Run it in GitHub Actions
+**Run it in GitHub Actions.** Actions → **Governance scan** → *Run workflow*, then enter one or more URLs, comma-separated. The evidence is uploaded as an artifact and kept for 7 days.
 
-Actions → **Governance scan** → *Run workflow*, enter one or more URLs (comma-separated). The evidence is uploaded as an artifact kept for 7 days.
+## Manners
 
-## Ground rules
+An auditor that ignores the rules it checks would be a bit rich.
 
-- Scan only sites you own or have permission to review. Do not publish findings about someone else's site without their permission.
-- The scanner announces itself (`website-governance-audit/<version>` in its user agent) and obeys robots.txt. A site that blocks crawlers is scanned only with the owner's permission (`--owner-authorized`).
-- The first-visit scan never accepts a consent banner, submits a form or creates an account.
-- The skill never states that a site "is compliant". It reports what the evidence shows against each clause.
+- **It knocks.** The scanner says who it is in its user agent (`website-governance-audit/<version>`) and obeys robots.txt. If a site blocks crawlers, the scan stops. It runs only with the owner's permission (`--owner-authorized`).
+- **It agrees to nothing.** The first-visit scan never accepts a consent banner, submits a form or creates an account.
+- **It doesn't overclaim.** The skill never says a site "is compliant". It reports what the evidence shows against each clause.
+- **It minds its own business.** Scan sites you own or have permission to review. Don't publish findings about someone else's site without their OK.
+- **Even the banner behaves.** The animation above plays once and settles inside five seconds (WCAG 2.2.2). A governance repo with an endlessly looping banner would be a little embarrassing.
 
 ## Licence
 
-MIT © 2026 Arooj Qureshi
+Code and skill: MIT © 2026 Arooj Qureshi.
+
+The banner embeds subsets of Inter Tight, Caveat and JetBrains Mono under the SIL Open Font License 1.1; the licence files are in [`assets/banner/`](assets/banner). Rebuild the banner with `python3 assets/banner/build.py`.
