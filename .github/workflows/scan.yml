@@ -1,0 +1,50 @@
+name: Governance scan
+
+# Run a first-visit governance scan of one or more websites and upload the evidence.
+# Evidence is kept as a short-lived artifact rather than committed, because it can
+# describe sites owned by other people.
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Comma-separated site URLs, e.g. https://example.com,https://example.org"
+        required: true
+      max_pages:
+        description: "Pages to crawl per site"
+        required: false
+        default: "12"
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Scan
+        env:
+          URLS: ${{ inputs.urls }}
+          MAX_PAGES: ${{ inputs.max_pages }}
+        run: |
+          IFS=',' read -ra LIST <<< "$URLS"
+          for raw in "${LIST[@]}"; do
+            u="$(echo "$raw" | xargs)"
+            [ -z "$u" ] && continue
+            host="$(echo "$u" | sed -E 's#^https?://##; s#/.*$##')"
+            echo "::group::Scanning $u"
+            node skill/website-governance-audit/scripts/scan.mjs "$u" --out "evidence/$host" --max-pages "$MAX_PAGES" || echo "::warning::Scan failed for $u"
+            echo "::endgroup::"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidence
+          path: evidence/
+          retention-days: 7

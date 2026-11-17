@@ -1,0 +1,19 @@
+{
+  "name": "website-governance-audit",
+  "version": "1.0.0",
+  "description": "A Claude skill and scanner that audits a website's governance (privacy, cookies, anti-spam, advertising claims, copyright, accessibility, AI-content disclosure) against the laws of its owner's country and its visitors' regions.",
+  "scripts": {
+    "scan": "node skill/website-governance-audit/scripts/scan.mjs"
+  },
+  "author": "Arooj Qureshi",
+  "license": "MIT",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "playwright": "^1.63.0"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arooj1/website-governance-audit"
+  }
+}
