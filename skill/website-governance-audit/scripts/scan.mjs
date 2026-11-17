@@ -297,8 +297,10 @@ try {
           label_nearby: (() => { const box = v.closest("section, figure, div"); return box ? AI.test(box.innerText || "") : false; })(),
         }));
         const iframes = Array.from(document.querySelectorAll("iframe")).map((f) => ({ src: abs(f.src || ""), title: f.title || null }));
-        const testimonials = Array.from(document.querySelectorAll("blockquote, [class*=testimonial], [class*=review], figure.quote")).map((q) => ({
-          text: (q.innerText || "").trim().slice(0, 300),
+        // Outermost testimonial containers only, so a <figure> and its <blockquote> count once.
+        const tq = Array.from(document.querySelectorAll("blockquote, [class*=testimonial], [class*=review], figure.quote"));
+        const testimonials = tq.filter((q) => !tq.some((o) => o !== q && o.contains(q))).map((q) => ({
+          text: (q.innerText || "").trim().slice(0, 400),
         })).slice(0, 12);
         const ld = Array.from(document.querySelectorAll('script[type="application/ld+json"]')).map((s) => {
           try { const j = JSON.parse(s.textContent); const g = j["@graph"] || [j]; return g.map((x) => x["@type"]); } catch { return ["(invalid JSON-LD)"]; }
