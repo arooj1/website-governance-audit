@@ -220,7 +220,7 @@ ul.plain{margin:6px 0 0;padding-left:1.2em;color:var(--muted)}
   <ul class="legend">${legend}</ul>
 
   <h2>Fix these first</h2>
-  <p class="lead-s">The three findings that matter most.</p>
+  <p class="lead-s">${topRows.filter(Boolean).length === 1 ? "The one finding to act on." : `The ${["", "", "two", "three", "four", "five"][topRows.filter(Boolean).length] || topRows.filter(Boolean).length} findings that matter most.`}</p>
   ${table(["#", "Finding", "Severity", "Fix", "Effort", "Status"], topRows)}
 
   <h2>Who's in scope</h2>
