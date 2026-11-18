@@ -55,6 +55,7 @@ async function get(url) {
 }
 
 async function signalFor(src) {
+  if (src.method === "manual") return "manual";
   const body = await get(src.url);
   switch (src.method) {
     case "regex": {
@@ -76,12 +77,10 @@ async function signalFor(src) {
     case "legisinfo": {
       const j = JSON.parse(body);
       const bill = Array.isArray(j) ? j[0] : j;
-      const parts = Object.entries(bill)
-        .filter(([k, v]) => /status|stage/i.test(k) && /en$|^[A-Za-z]+Name$|Status$/i.test(k) && typeof v === "string" && v && !/fr$/i.test(k))
-        .map(([k, v]) => `${k}=${v}`)
-        .sort();
+      const keys = ["StatusNameEn", "LatestCompletedMajorStageNameEn", "LatestCompletedMajorStageChamberNameEn"];
+      const parts = keys.filter((k) => typeof bill[k] === "string" && bill[k]).map((k) => bill[k]);
       if (!parts.length) throw new Error("no status fields in LEGISinfo response");
-      return parts.join("; ");
+      return parts.join(" · ");
     }
     default:
       throw new Error(`unknown method ${src.method}`);
@@ -103,7 +102,8 @@ for (const src of [...reg.sources, ...(reg.pending || [])]) {
   const res = { id: src.id, name: src.name, url: src.url, entries: src.entries, verified_signal: src.verified_signal, last_verified: src.last_verified, pending: (reg.pending || []).includes(src) };
   try {
     res.signal = await signalFor(src);
-    if (src.verified_signal === null) res.state = "unseeded";
+    if (src.method === "manual") res.state = daysSince(src.last_verified) > (reg.manual_review_days || 90) ? "stale" : "ok";
+    else if (src.verified_signal === null) res.state = "unseeded";
     else if (res.signal !== src.verified_signal) res.state = "changed";
     else if (daysSince(src.last_verified) > reg.review_after_days) res.state = "stale";
     else res.state = "ok";
@@ -138,7 +138,7 @@ const repo = process.env.GITHUB_REPOSITORY;
 const actionable = results.filter((r) => ["changed", "stale", "blind", "due"].includes(r.state));
 const titleFor = (r) => ({
   changed: `Law watch: ${r.name} has changed`,
-  stale: `Law watch: ${r.name} not re-verified in ${reg.review_after_days} days`,
+  stale: `Law watch: ${r.name} due for re-verification`,
   blind: `Law watch: can't read the change signal for ${r.name}`,
   due: `Law watch: date reached (${r.date}) for ${r.id}`,
 }[r.state]);
@@ -146,7 +146,9 @@ const titleFor = (r) => ({
 function bodyFor(r) {
   const lines = [];
   if (r.state === "changed") lines.push(`The official source's change signal moved.`, "", `| | |`, `|---|---|`, `| Verified signal | \`${r.verified_signal}\` (verified ${r.last_verified}) |`, `| Current signal | \`${r.signal}\` |`);
-  if (r.state === "stale") lines.push(`Last verified ${r.last_verified}, more than ${reg.review_after_days} days ago. The text may not have changed, but guidance and readings may have.`);
+  if (r.state === "stale") lines.push(r.signal === "manual"
+    ? `This source has no machine-readable change signal, so it is checked by a person every ${reg.manual_review_days || 90} days. Last verified ${r.last_verified}.`
+    : `Last verified ${r.last_verified}, more than ${reg.review_after_days} days ago. The text may not have changed, but guidance and readings may have.`);
   if (r.state === "blind") lines.push(`The watcher could not read this source's change signal, so a change would go unnoticed.`, "", `Error: \`${r.error}\``, "", `Fix the \`pattern\` or \`method\` for \`${r.id}\` in \`references/sources.json\`.`);
   if (r.state === "due") lines.push(r.name);
   if (r.url) lines.push("", `Source: ${r.url.replace(/\/json$/, "")}`);

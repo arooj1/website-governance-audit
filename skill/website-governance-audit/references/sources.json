@@ -1,132 +1,281 @@
 {
-  "about": "Register of the official sources behind every clause-library entry. The weekly law-watch job (scripts/law-watch.mjs) reads each source's own change signal and opens a GitHub issue when it differs from verified_signal, or when last_verified is older than review_after_days. A person updates verified_signal and last_verified only after re-reading the source and the entries it backs.",
+  "about": "Register of the official sources behind every clause-library entry. The weekly law-watch job (scripts/law-watch.mjs) reads each source's own change signal and opens a GitHub issue when it differs from verified_signal, or when last_verified is older than review_after_days. A person updates verified_signal and last_verified only after re-reading the source and the entries it backs. Sources with method \"manual\" have no machine-readable change signal (the page is drawn by JavaScript or blocks automated readers, and the watcher does not work around that); they are flagged for a person to re-read every manual_review_days.",
   "review_after_days": 180,
   "sources": [
     {
-      "id": "pipeda", "name": "PIPEDA (S.C. 2000, c. 5)", "file": "clauses-canada.md",
-      "entries": ["CA-PIPEDA-01", "CA-PIPEDA-02", "CA-PIPEDA-03", "CA-PIPEDA-04"],
+      "id": "pipeda",
+      "name": "PIPEDA (S.C. 2000, c. 5)",
+      "file": "clauses-canada.md",
+      "entries": [
+        "CA-PIPEDA-01",
+        "CA-PIPEDA-02",
+        "CA-PIPEDA-03",
+        "CA-PIPEDA-04"
+      ],
       "url": "https://laws-lois.justice.gc.ca/eng/acts/P-8.6/",
-      "method": "regex", "pattern": "Last amended on ([A-Z][a-z]+ \\d{1,2}, \\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "casl", "name": "CASL (S.C. 2010, c. 23)", "file": "clauses-canada.md",
-      "entries": ["CA-CASL-01", "CA-CASL-02", "CA-CASL-03"],
+      "id": "casl",
+      "name": "CASL (S.C. 2010, c. 23)",
+      "file": "clauses-canada.md",
+      "entries": [
+        "CA-CASL-01",
+        "CA-CASL-02",
+        "CA-CASL-03"
+      ],
       "url": "https://laws-lois.justice.gc.ca/eng/acts/E-1.6/",
-      "method": "regex", "pattern": "Last amended on ([A-Z][a-z]+ \\d{1,2}, \\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "competition-act", "name": "Competition Act (R.S.C. 1985, c. C-34)", "file": "clauses-canada.md",
-      "entries": ["CA-COMP-01", "CA-COMP-02", "CA-COMP-03", "AI-04"],
+      "id": "competition-act",
+      "name": "Competition Act (R.S.C. 1985, c. C-34)",
+      "file": "clauses-canada.md",
+      "entries": [
+        "CA-COMP-01",
+        "CA-COMP-02",
+        "CA-COMP-03",
+        "AI-04"
+      ],
       "url": "https://laws-lois.justice.gc.ca/eng/acts/C-34/",
-      "method": "regex", "pattern": "Last amended on ([A-Z][a-z]+ \\d{1,2}, \\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "copyright-act", "name": "Copyright Act (R.S.C. 1985, c. C-42)", "file": "clauses-canada.md",
-      "entries": ["CA-COPY-01"],
+      "id": "copyright-act",
+      "name": "Copyright Act (R.S.C. 1985, c. C-42)",
+      "file": "clauses-canada.md",
+      "entries": [
+        "CA-COPY-01"
+      ],
       "url": "https://laws-lois.justice.gc.ca/eng/acts/C-42/",
-      "method": "regex", "pattern": "Last amended on ([A-Z][a-z]+ \\d{1,2}, \\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "trademarks-act", "name": "Trademarks Act (R.S.C. 1985, c. T-13)", "file": "clauses-canada.md",
-      "entries": ["CA-COPY-02"],
+      "id": "trademarks-act",
+      "name": "Trademarks Act (R.S.C. 1985, c. T-13)",
+      "file": "clauses-canada.md",
+      "entries": [
+        "CA-COPY-02"
+      ],
       "url": "https://laws-lois.justice.gc.ca/eng/acts/T-13/",
-      "method": "regex", "pattern": "Last amended on ([A-Z][a-z]+ \\d{1,2}, \\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "quebec-law-25", "name": "Quebec private-sector privacy act (CQLR c P-39.1)", "file": "clauses-canada.md",
-      "entries": ["CA-QC-01", "CA-QC-02", "CA-QC-03", "CA-QC-04"],
+      "id": "quebec-law-25",
+      "name": "Quebec private-sector privacy act (CQLR c P-39.1)",
+      "file": "clauses-canada.md",
+      "entries": [
+        "CA-QC-01",
+        "CA-QC-02",
+        "CA-QC-03",
+        "CA-QC-04"
+      ],
       "url": "https://www.legisquebec.gouv.qc.ca/en/document/cs/P-39.1",
-      "method": "regex", "pattern": "[Uu]pdated to ([^<\\n]{4,40}?\\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "manual",
+      "verified_signal": null,
+      "last_verified": "2026-11-17",
+      "why_manual": "LégisQuébec answers automated requests with HTTP 403."
     },
     {
-      "id": "aoda-iasr", "name": "AODA Integrated Accessibility Standards (O. Reg. 191/11)", "file": "clauses-canada.md",
-      "entries": ["CA-AODA-01", "CA-AODA-02", "ACC-03"],
+      "id": "aoda-iasr",
+      "name": "AODA Integrated Accessibility Standards (O. Reg. 191/11)",
+      "file": "clauses-canada.md",
+      "entries": [
+        "CA-AODA-01",
+        "CA-AODA-02",
+        "ACC-03"
+      ],
       "url": "https://www.ontario.ca/laws/regulation/110191",
-      "method": "regex", "pattern": "[Cc]onsolidation [Pp]eriod:?\\s*[Ff]rom\\s*([A-Z][a-z]+ \\d{1,2}, \\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "manual",
+      "verified_signal": null,
+      "last_verified": "2026-11-17",
+      "why_manual": "Ontario e-Laws renders its text with JavaScript; the plain page carries no date."
     },
     {
-      "id": "gdpr", "name": "GDPR (Regulation (EU) 2016/679)", "file": "clauses-eu-uk.md",
-      "entries": ["EU-GDPR-01", "EU-GDPR-02", "EU-GDPR-03", "EU-GDPR-04", "EU-GDPR-05", "EU-GDPR-06"],
+      "id": "gdpr",
+      "name": "GDPR (Regulation (EU) 2016/679)",
+      "file": "clauses-eu-uk.md",
+      "entries": [
+        "EU-GDPR-01",
+        "EU-GDPR-02",
+        "EU-GDPR-03",
+        "EU-GDPR-04",
+        "EU-GDPR-05",
+        "EU-GDPR-06"
+      ],
       "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32016R0679",
-      "method": "regex", "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "eprivacy", "name": "ePrivacy Directive (2002/58/EC)", "file": "clauses-eu-uk.md",
-      "entries": ["EU-EPR-01"],
+      "id": "eprivacy",
+      "name": "ePrivacy Directive (2002/58/EC)",
+      "file": "clauses-eu-uk.md",
+      "entries": [
+        "EU-EPR-01"
+      ],
       "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32002L0058",
-      "method": "regex", "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "eu-ai-act", "name": "EU AI Act (Regulation (EU) 2024/1689)", "file": "clauses-eu-uk.md",
-      "entries": ["EU-AI-01", "EU-AI-02", "EU-AI-03", "AI-01", "AI-02"],
+      "id": "eu-ai-act",
+      "name": "EU AI Act (Regulation (EU) 2024/1689)",
+      "file": "clauses-eu-uk.md",
+      "entries": [
+        "EU-AI-01",
+        "EU-AI-02",
+        "EU-AI-03",
+        "AI-01",
+        "AI-02"
+      ],
       "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32024R1689",
-      "method": "regex", "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "eaa", "name": "European Accessibility Act (Directive (EU) 2019/882)", "file": "clauses-eu-uk.md",
-      "entries": ["EU-EAA-01"],
+      "id": "eaa",
+      "name": "European Accessibility Act (Directive (EU) 2019/882)",
+      "file": "clauses-eu-uk.md",
+      "entries": [
+        "EU-EAA-01"
+      ],
       "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32019L0882",
-      "method": "regex", "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "uk-pecr-reg6", "name": "UK PECR regulation 6", "file": "clauses-eu-uk.md",
-      "entries": ["UK-PECR-01"],
+      "id": "uk-pecr-reg6",
+      "name": "UK PECR regulation 6",
+      "file": "clauses-eu-uk.md",
+      "entries": [
+        "UK-PECR-01"
+      ],
       "url": "https://www.legislation.gov.uk/uksi/2003/2426/regulation/6",
-      "method": "hash", "selector_hint": "main content text",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "hash",
+      "selector_hint": "main content text",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "ftc-endorsement-guides", "name": "FTC Endorsement Guides (16 CFR Part 255)", "file": "clauses-us.md",
-      "entries": ["US-FTC-01", "US-FTC-02"],
+      "id": "ftc-endorsement-guides",
+      "name": "FTC Endorsement Guides (16 CFR Part 255)",
+      "file": "clauses-us.md",
+      "entries": [
+        "US-FTC-01",
+        "US-FTC-02"
+      ],
       "url": "https://www.ecfr.gov/api/versioner/v1/versions/title-16.json?part=255",
       "method": "ecfr",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "ftc-reviews-rule", "name": "FTC Consumer Reviews and Testimonials Rule (16 CFR Part 465)", "file": "clauses-us.md",
-      "entries": ["US-FTC-01", "US-FTC-02"],
+      "id": "ftc-reviews-rule",
+      "name": "FTC Consumer Reviews and Testimonials Rule (16 CFR Part 465)",
+      "file": "clauses-us.md",
+      "entries": [
+        "US-FTC-01",
+        "US-FTC-02"
+      ],
       "url": "https://www.ecfr.gov/api/versioner/v1/versions/title-16.json?part=465",
       "method": "ecfr",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "coppa", "name": "COPPA Rule (16 CFR Part 312)", "file": "clauses-us.md",
-      "entries": ["US-COPPA-01"],
+      "id": "coppa",
+      "name": "COPPA Rule (16 CFR Part 312)",
+      "file": "clauses-us.md",
+      "entries": [
+        "US-COPPA-01"
+      ],
       "url": "https://www.ecfr.gov/api/versioner/v1/versions/title-16.json?part=312",
       "method": "ecfr",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     },
     {
-      "id": "wcag22", "name": "WCAG 2.2 (W3C Recommendation)", "file": "clauses-accessibility-ai.md",
-      "entries": ["ACC-01", "ACC-02", "CA-AODA-01"],
+      "id": "wcag22",
+      "name": "WCAG 2.2 (W3C Recommendation)",
+      "file": "clauses-accessibility-ai.md",
+      "entries": [
+        "ACC-01",
+        "ACC-02",
+        "CA-AODA-01"
+      ],
       "url": "https://www.w3.org/TR/WCAG22/",
-      "method": "regex", "pattern": "W3C Recommendation (\\d{1,2} [A-Z][a-z]+ \\d{4})",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "method": "regex",
+      "pattern": "W3C Recommendation (\\d{1,2} [A-Z][a-z]+ \\d{4})",
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     }
   ],
   "pending": [
     {
-      "id": "bill-c-36", "name": "Bill C-36, Protecting Privacy and Consumer Data Act (would replace Part 1 of PIPEDA)",
-      "entries": ["CA-PIPEDA-01", "CA-PIPEDA-02", "CA-PIPEDA-03", "CA-PIPEDA-04", "jurisdictions.md: PIPEDA row"],
+      "id": "bill-c-36",
+      "name": "Bill C-36, Protecting Privacy and Consumer Data Act (would replace Part 1 of PIPEDA)",
+      "entries": [
+        "CA-PIPEDA-01",
+        "CA-PIPEDA-02",
+        "CA-PIPEDA-03",
+        "CA-PIPEDA-04",
+        "jurisdictions.md: PIPEDA row"
+      ],
       "url": "https://www.parl.ca/legisinfo/en/bill/45-1/c-36/json",
       "method": "legisinfo",
-      "verified_signal": null, "last_verified": "2026-11-17"
+      "verified_signal": null,
+      "last_verified": "2026-11-17"
     }
   ],
   "watch_dates": [
-    { "date": "2026-12-02", "id": "eu-ai-act-50-2-grace", "note": "EU AI Act Art. 50(2) grace period ends for existing generative systems (Digital Omnibus). Check EU-AI-03 and the jurisdictions table.", "entries": ["EU-AI-03"] },
-    { "date": "2027-01-01", "id": "ccpa-threshold", "note": "CCPA revenue threshold is adjusted for inflation in odd-numbered years. Check the figure in US-CCPA-01 and jurisdictions.md against the CPPA's published adjustment.", "entries": ["US-CCPA-01"] },
-    { "date": "2027-02-17", "id": "regulator-guidance-quarterly", "note": "Quarterly review of regulator guidance not covered by text-change signals: OPC (Canada), CAI (Quebec), EDPB (EU), ICO (UK), FTC, Competition Bureau.", "entries": ["all"] }
-  ]
+    {
+      "date": "2026-12-02",
+      "id": "eu-ai-act-50-2-grace",
+      "note": "EU AI Act Art. 50(2) grace period ends for existing generative systems (Digital Omnibus). Check EU-AI-03 and the jurisdictions table.",
+      "entries": [
+        "EU-AI-03"
+      ]
+    },
+    {
+      "date": "2027-01-01",
+      "id": "ccpa-threshold",
+      "note": "CCPA revenue threshold is adjusted for inflation in odd-numbered years. Check the figure in US-CCPA-01 and jurisdictions.md against the CPPA's published adjustment.",
+      "entries": [
+        "US-CCPA-01"
+      ]
+    },
+    {
+      "date": "2027-02-17",
+      "id": "regulator-guidance-quarterly",
+      "note": "Quarterly review of regulator guidance not covered by text-change signals: OPC (Canada), CAI (Quebec), EDPB (EU), ICO (UK), FTC, Competition Bureau.",
+      "entries": [
+        "all"
+      ]
+    }
+  ],
+  "manual_review_days": 90
 }
