@@ -58,7 +58,7 @@
       "id": "F3", "severity": "medium", "title": "Experience claim overstates what is counted",
       "saw": "\"13+ years of production AI in regulated industries\" on the homepage and in llms.txt; the years include education analytics and university research.",
       "clause": { "text": "Competition Act s. 74.01(1)(a); FTC Act s. 5", "url": "https://laws-lois.justice.gc.ca/eng/acts/C-34/" },
-      "why": "Experience is the main reason a buyer picks a fractional lead, so the claim is material.",
+      "why": "Experience is the main reason a buyer picks an AI adviser, so the claim is material.",
       "risk": "A buyer who counts the CV may doubt the rest of the page.",
       "fix": "Reword to \"13+ years in AI and data science, now in regulated industries (telecom and energy)\"; update llms.txt and JSON-LD.",
       "fix_short": "Reword to \"13+ years in AI and data science, now in regulated industries\".",
