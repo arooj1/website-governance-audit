@@ -15,7 +15,7 @@
       "url": "https://laws-lois.justice.gc.ca/eng/acts/P-8.6/",
       "method": "regex",
       "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
-      "verified_signal": null,
+      "verified_signal": "2025-03-04",
       "last_verified": "2026-11-17"
     },
     {
@@ -30,8 +30,9 @@
       "url": "https://laws-lois.justice.gc.ca/eng/acts/E-1.6/",
       "method": "regex",
       "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
-      "verified_signal": null,
-      "last_verified": "2026-11-17"
+      "verified_signal": "not yet reviewed: amendment of 2026-01-01",
+      "last_verified": "2026-11-17",
+      "note": "Seeded unreviewed on purpose: the 2026-01-01 amendment was not checked against CA-CASL-01 to 03, so the watcher opens an issue for it."
     },
     {
       "id": "competition-act",
@@ -46,8 +47,9 @@
       "url": "https://laws-lois.justice.gc.ca/eng/acts/C-34/",
       "method": "regex",
       "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
-      "verified_signal": null,
-      "last_verified": "2026-11-17"
+      "verified_signal": "2026-03-26",
+      "last_verified": "2026-11-17",
+      "note": "2026-03-26 amendment (Bill C-15) narrowed the environmental-claims provisions; no entry here cites them. Checked 2026-11-17."
     },
     {
       "id": "copyright-act",
@@ -59,7 +61,7 @@
       "url": "https://laws-lois.justice.gc.ca/eng/acts/C-42/",
       "method": "regex",
       "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
-      "verified_signal": null,
+      "verified_signal": "2024-11-07",
       "last_verified": "2026-11-17"
     },
     {
@@ -72,7 +74,7 @@
       "url": "https://laws-lois.justice.gc.ca/eng/acts/T-13/",
       "method": "regex",
       "pattern": "[Ll]ast amended on (\\d{4}-\\d{2}-\\d{2})",
-      "verified_signal": null,
+      "verified_signal": "2025-04-01",
       "last_verified": "2026-11-17"
     },
     {
@@ -121,7 +123,7 @@
       "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32016R0679",
       "method": "regex",
       "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
-      "verified_signal": null,
+      "verified_signal": "04/05/2016",
       "last_verified": "2026-11-17"
     },
     {
@@ -134,7 +136,7 @@
       "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32002L0058",
       "method": "regex",
       "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
-      "verified_signal": null,
+      "verified_signal": "19/12/2009",
       "last_verified": "2026-11-17"
     },
     {
@@ -151,7 +153,7 @@
       "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32024R1689",
       "method": "regex",
       "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
-      "verified_signal": null,
+      "verified_signal": "27/07/2026",
       "last_verified": "2026-11-17"
     },
     {
@@ -164,7 +166,7 @@
       "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32019L0882",
       "method": "regex",
       "pattern": "(?:[Cc]urrent consolidated version|consolidated version)[^0-9]{0,40}(\\d{2}/\\d{2}/\\d{4})",
-      "verified_signal": null,
+      "verified_signal": "07/06/2019",
       "last_verified": "2026-11-17"
     },
     {
@@ -177,7 +179,7 @@
       "url": "https://www.legislation.gov.uk/uksi/2003/2426/regulation/6",
       "method": "hash",
       "selector_hint": "main content text",
-      "verified_signal": null,
+      "verified_signal": "sha256:ef49fbfe55f39bbe",
       "last_verified": "2026-11-17"
     },
     {
@@ -190,7 +192,7 @@
       ],
       "url": "https://www.ecfr.gov/api/versioner/v1/versions/title-16.json?part=255",
       "method": "ecfr",
-      "verified_signal": null,
+      "verified_signal": "2023-07-26",
       "last_verified": "2026-11-17"
     },
     {
@@ -203,7 +205,7 @@
       ],
       "url": "https://www.ecfr.gov/api/versioner/v1/versions/title-16.json?part=465",
       "method": "ecfr",
-      "verified_signal": null,
+      "verified_signal": "2024-10-21",
       "last_verified": "2026-11-17"
     },
     {
@@ -215,7 +217,7 @@
       ],
       "url": "https://www.ecfr.gov/api/versioner/v1/versions/title-16.json?part=312",
       "method": "ecfr",
-      "verified_signal": null,
+      "verified_signal": "2025-06-23",
       "last_verified": "2026-11-17"
     },
     {
@@ -230,7 +232,7 @@
       "url": "https://www.w3.org/TR/WCAG22/",
       "method": "regex",
       "pattern": "W3C Recommendation (\\d{1,2} [A-Z][a-z]+ \\d{4})",
-      "verified_signal": null,
+      "verified_signal": "12 December 2024",
       "last_verified": "2026-11-17"
     }
   ],
@@ -247,7 +249,7 @@
       ],
       "url": "https://www.parl.ca/legisinfo/en/bill/45-1/c-36/json",
       "method": "legisinfo",
-      "verified_signal": null,
+      "verified_signal": "At second reading in the House of Commons · First reading · House of Commons",
       "last_verified": "2026-11-17"
     }
   ],
