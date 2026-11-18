@@ -16,6 +16,10 @@ on:
         description: "Open issues for findings (off = report in the log only)"
         type: boolean
         default: true
+      probe:
+        description: "Maintainers: a source id to print matching lines for (no issues opened)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -33,4 +37,10 @@ jobs:
       - name: Check sources
         env:
           GITHUB_TOKEN: ${{ (github.event_name == 'schedule' || inputs.open_issues) && secrets.GITHUB_TOKEN || '' }}
-        run: node scripts/law-watch.mjs
+          PROBE: ${{ inputs.probe }}
+        run: |
+          if [ -n "$PROBE" ]; then
+            for id in $PROBE; do node scripts/law-watch.mjs --probe "$id"; done
+          else
+            node scripts/law-watch.mjs
+          fi

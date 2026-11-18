@@ -26,6 +26,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const REG = path.join(root, "skill/website-governance-audit/references/sources.json");
 const reg = JSON.parse(fs.readFileSync(REG, "utf8"));
 const SEED = process.argv.includes("--seed");
+const PROBE = process.argv.includes("--probe") ? process.argv[process.argv.indexOf("--probe") + 1] : null;
 const UA = "website-governance-audit-law-watch/1.0 (+https://github.com/arooj1/website-governance-audit)";
 const today = new Date().toISOString().slice(0, 10);
 const daysSince = (d) => Math.floor((Date.parse(today) - Date.parse(d)) / 86400000);
@@ -85,6 +86,16 @@ async function signalFor(src) {
     default:
       throw new Error(`unknown method ${src.method}`);
   }
+}
+
+// --probe <id>: print the text around date-like words, to write or fix a source's pattern.
+if (PROBE) {
+  const src = [...reg.sources, ...(reg.pending || [])].find((x) => x.id === PROBE);
+  const text = htmlToText(await get(src.url));
+  const hits = text.match(/.{0,80}(amended|current to|consolidat|currency|updated to|in force).{0,80}/gi) || [];
+  console.log(`${hits.length} hits for ${src.id}:`);
+  for (const h of hits.slice(0, 12)) console.log("  " + h);
+  process.exit(0);
 }
 
 const results = [];
