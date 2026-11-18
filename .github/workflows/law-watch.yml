@@ -1,0 +1,36 @@
+# Law watch — weekly check that the laws behind the clause libraries haven't changed.
+#
+# Reads each official source's own change signal (Justice Laws "Last amended on", eCFR
+# amendment dates, EUR-Lex consolidated versions, LEGISinfo bill stage, W3C dates) and
+# opens a `law-watch` issue for anything that changed, went stale, or can't be read.
+# It never edits the clause libraries.
+
+name: Law watch
+
+on:
+  schedule:
+    - cron: "17 14 * * 1" # Mondays 09:17 Toronto (EST)
+  workflow_dispatch:
+    inputs:
+      open_issues:
+        description: "Open issues for findings (off = report in the log only)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check sources
+        env:
+          GITHUB_TOKEN: ${{ (github.event_name == 'schedule' || inputs.open_issues) && secrets.GITHUB_TOKEN || '' }}
+        run: node scripts/law-watch.mjs
