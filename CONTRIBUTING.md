@@ -35,6 +35,10 @@ They scan two local fixture sites in `test/fixtures/` (one open, one whose robot
 - **New jurisdictions:** add the trigger to `jurisdictions.md` first (what brings the law into play for a foreign site), then the checks.
 - Never commit scan evidence about sites you don't own. `evidence/` is git-ignored for that reason.
 
+## Law-watch issues
+
+The weekly Law watch action opens issues labelled `law-watch` when an official source changes. To close one: re-read the source, update the affected entries if needed, then set that source's `verified_signal` and `last_verified` in `references/sources.json` in the same pull request. Never update a signal without reading what changed. A pattern that stops matching shows up as a "can't read the change signal" issue; fix it with `node scripts/law-watch.mjs --probe <source-id>`.
+
 ## Reporting problems
 
 - **A clause is wrong or out of date:** open an issue with the entry ID (for example `EU-AI-01`), what it says, what the law says, and a link to the official text.

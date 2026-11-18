@@ -72,7 +72,19 @@ The most uncomfortable finding was my own headline. "13+ years of production AI 
 | US | FTC Act s. 5, Endorsement Guides (16 CFR 255), Consumer Reviews and Testimonials Rule (16 CFR 465), CCPA/CPRA, COPPA, CAN-SPAM, ADA (risk only) |
 | Standards | WCAG 2.2 AA, C2PA content credentials, RFC 9116 security.txt, AI-crawler policy |
 
-Each library file carries a "Last verified" date. Laws move, so check the date before you lean on an entry.
+Each library file carries a "Last verified" date. Laws move, so the library is watched (next section).
+
+## Keeping the law current
+
+A clause library is only as good as its last check. Three layers keep it honest:
+
+1. **A source register.** [`sources.json`](skill/website-governance-audit/references/sources.json) ties every clause entry to its official source (Justice Laws, EUR-Lex, eCFR, legislation.gov.uk, W3C, LEGISinfo) and records the change signal at the last human review: "last amended on", the latest amendment date, the current consolidated version, a bill's stage.
+2. **A weekly watch.** Every Monday, the [Law watch](.github/workflows/law-watch.yml) action reads each source's signal and opens a `law-watch` issue when one has moved, when a review is older than 180 days, when a watched date arrives (like the EU AI Act's next deadline), or when it can no longer read a source. A blind watcher raises its hand; it doesn't stay quiet.
+3. **A person approves every change.** Once a month, a Claude task turns open `law-watch` issues into draft pull requests that update the affected entries, citing the official text. Nothing merges without a human review.
+
+Two sources don't offer a readable signal: LégisQuébec refuses automated requests, and Ontario's e-Laws draws its text with JavaScript. The watcher doesn't work around either; they get a human re-read every 90 days instead.
+
+What this can't catch: court rulings and regulator guidance (the Privacy Commissioner, the CAI, the EDPB, the ICO, the FTC) change meaning without changing the text. Those get a scheduled quarterly review. If you rely on an entry for something that matters, read the source it links to.
 
 ## How it works
 

@@ -94,4 +94,7 @@ Rules for the content:
 
 ## Keeping the libraries current
 
-Laws move. Each library file has a "Last verified" date. If it is more than six months old, or the audit date is past a "watch" date in the file, verify the entries you rely on against the official source before writing the report, and update the file.
+Laws move. `references/sources.json` ties every entry to its official source and the change signal at the last human review; a weekly job opens a `law-watch` issue in the repo when a source changes. Before writing a report:
+
+- Check the repo's open `law-watch` issues (https://github.com/arooj1/website-governance-audit/issues?q=is%3Aopen+label%3Alaw-watch). If an issue touches an entry you are about to cite, verify that entry against the official source yourself, and say in "Method and limits" that it was under review.
+- If a library's "Last verified" date is more than six months old, or a `watch_dates` entry in sources.json has passed and isn't marked done, verify the entries you rely on before you cite them.
