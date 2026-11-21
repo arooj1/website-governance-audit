@@ -19,7 +19,7 @@ out of it, including this file.
 - `test/run.mjs` and `test/fixtures/`: scans two local fixture sites and renders the example
   report. No network access to real sites.
 - `examples/aroojqureshi.com.report.json`: sample report data from her own site.
-- `docs/article/`: images and carousel PDF for her LinkedIn article on website governance.
+- `docs/article/`: images and carousel PDF for the accompanying article.
 
 ## Commands
 
@@ -49,22 +49,11 @@ out of it, including this file.
 6. **README animations** play once and settle within five seconds (WCAG 2.2.2). No endless
    loops.
 
-## Status and open items
+## Status
 
-- Tested first on aroojqureshi.com (9 findings, 8 fixed the same day, the ninth closed on
-  confirmation; re-scan verified). getintech.ca was wanted as a second test.
-- To do: list this project under featured projects on her GitHub profile README
-  (`arooj1/arooj1`); it backs her planned LinkedIn article on website governance from an AI
-  perspective.
+Tested first on aroojqureshi.com: 9 findings, 8 fixed the same day, the ninth closed on
+confirmation; a re-scan of the live site verified the fixes.
 
-## Standing rules (all of Arooj's projects)
+## Keeping this file current
 
-- **Secrets** live only in GitHub Actions Secrets and variables or Cloudflare secrets, or a
-  git-ignored `.env`. Never in the repo, a log or a commit.
-- **Free tier only.** Do not add a paid service. The account's GitHub budgets are
-  deliberately $0 (usage blocks once the free allowance is used); do not suggest raising
-  them. Codespaces is not used: do not create codespaces or prebuilds.
-- **Working style.** Verify what is actually available before proposing, push back with
-  reasons instead of agreeing, and prefer quality over speed.
-- **Keep this file current.** When a decision, status or constraint changes, update this
-  CLAUDE.md in the same change.
+When a rule, layout or status changes, update this CLAUDE.md in the same change.
